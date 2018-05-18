@@ -1,6 +1,6 @@
 {
-  "name": "Bitcoin Cash Microblogging Playground",
-  "short_name": "BCH Post",
+  "name": "Post on Blockchain(BCH)",
+  "short_name": "ChainPost",
   "icons": [
     {
       "src": "/favicon.png",
