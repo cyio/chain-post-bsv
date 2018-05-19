@@ -2,7 +2,7 @@ var cacheName = 'chain-post';
 var filesToCache = [
   '/',
   '/index.html',
-  'https://unpkg.com/datacash@1.1.3/dist/datacash.js'
+  'https://cdn.jsdelivr.net/npm/datacash@1.1.7/dist/datacash.min.js'
 ];
 self.addEventListener('install', function(e) {
   console.log('[ServiceWorker] Install');
