@@ -193,7 +193,16 @@
       return false;
     }
     sendEl.onclick = function(e) {
+      if (!messageEl.value) {
+        alert('Message cannot be empty')
+        return
+      }
+      if (!keyEl.value) {
+        alert('Private Key cannot be empty')
+        return
+      }
       if (!sending) {
+        e.target.textContent = "Transaction creating...";
         datacash.build(dsl, function(err, tx) {
           transaction = tx;
           console.log('tx: ', tx);
@@ -221,7 +230,7 @@
                 sending = false
                 if (!response.tx) {
                   e.target.textContent = "Send failed";
-                  confirmEl.innerHTML = "Error Response: " + response.response;
+                  confirmEl.innerHTML = "Response: " + response.response;
                   return
                 }
                 e.target.textContent = "Sent!";
