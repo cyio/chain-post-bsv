@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#fff">
   <link rel=icon type=image/png sizes=16x16 href=/favicon.png>
   <link rel=manifest href=/manifest.json>
-  <title>ChainPost - Post on Blockchain(BCH)</title>
+  <title>发消息到区块链（BCH）</title>
   <style>
     body {
       margin: 0;
@@ -178,15 +178,15 @@
     }
     sendEl.onclick = function(e) {
       if (!messageEl.value) {
-        alert('Message cannot be empty')
+        alert('消息不能为空')
         return
       }
       if (!keyEl.value) {
-        alert('Private Key cannot be empty')
+        alert('未设置私钥')
         return
       }
       if (!sending) {
-        e.target.textContent = "Transaction creating...";
+        e.target.textContent = "交易创建中...";
         datacash.build(dsl, function(err, tx) {
           transaction = tx;
           console.log('tx: ', tx);
@@ -195,7 +195,7 @@
           if (typeof v === 'string') {
             alert(v);
           } else {
-            e.target.textContent = "Sending...";
+            e.target.textContent = "发送中...";
             sending = true;
             fetch(endpoint, {
               headers: { 'Content-type': 'application/json' },
@@ -213,12 +213,12 @@
                 console.log("Response = ", response)
                 sending = false
                 if (!response.tx) {
-                  e.target.textContent = "Send failed";
+                  e.target.textContent = "发布失败";
                   confirmEl.innerHTML = "Response: " + response.response;
                   return
                 }
-                e.target.textContent = "Sent!";
-                confirmEl.innerHTML = "<a href='https://explorer.bitcoin.com/bch/tx/" + response.tx + "' target='_blank'>Success! Click to view Transaction</a>";
+                e.target.textContent = "发布成功!";
+                confirmEl.innerHTML = "<a href='https://explorer.bitcoin.com/bch/tx/" + response.tx + "' target='_blank'>点此查看交易</a>";
               })
           }
         })
@@ -227,8 +227,8 @@
     }
 
     var update = function() {
-      if (sendEl.textContent !== 'Send') {
-        sendEl.textContent = "Send";
+      if (sendEl.textContent !== '发布') {
+        sendEl.textContent = "发布";
         confirmEl.innerHTML = ''
       }
       if (selected) {
@@ -246,37 +246,34 @@
 </head>
 <body>
   <div class='container'>
-    <h1>Post on Blockchain(BCH)</h1>
+    <h1>发消息到区块链(BCH)，永久存储</h1>
     <div class='row'>
-      <h2>Write a message</h2>
+      <h2>说点什么</h2>
       <div class="message-count-wrap">[<span class="message-byte-count"></span>]</div>
     </div>
     <div class='row'>
-      <textarea id='message' class='item' placeholder='write a message'></textarea>
+      <textarea id='message' class='item' placeholder='说点什么'></textarea>
     </div>
     <div class='row'>
-      <a href='#' id='send'>Send</a>
+      <a href='#' id='send'>发布</a>
     </div>
     <div class='row' id='txconfirmation'>
     </div>
-    <h1>Settings</h1>
+    <h1>设置</h1>
     <div class='row'>
-      <h2>Private key</h2>
+      <h2>私钥</h2>
     </div>
     <div class='row key'>
-      <input type='password' id='privatekey' placeholder='enter private key' class='item'>
+      <input type='password' id='privatekey' placeholder='请输入私钥' class='item'>
       <div>
-        <input type="checkbox" id='showkey'>show</input>
-        <input type="checkbox" id='savekey'>save</input>
+        <input type="checkbox" id='showkey'>显示</input>
+        <input type="checkbox" id='savekey'>保存（仅本地）</input>
       </div>
     </div>
     <div class='row noflex'>
-      <h2>About</h2>
-      This website uses an open source Bitcoin Cash library called <a href='https://github.com/unwriter/datacash'>Datacash</a> to construct and broadcast OP_RETURN Bitcoin Cash Transactions.<br><br>
-      1. All the signing takes place 100% on the client side so your private key is safe. (Check out the source code to make sure)<br><br>
-      2. After the signed transaction is constructed, you can broadcast it to Bitcoin Cash network by pressing the "Send" button. This will broadcast the signed transaction through a public JSON-RPC endpoint.<br><br>
-      3. This forked version have add some features like option to remember private-key, error handle, etc.
-        <a href='https://unwriter.github.io/datacash/example/playground.html'>original version</a>
+      <h2>关于</h2>
+      此网站使用开源的库 <a href='https://github.com/unwriter/datacash'>Datacash</a> 来构造和广播 OP_RETURN 比特币现金交易。<br><br>
+      所有签名 100% 发生在客户端，因此您的私钥是安全的。（可以查看源代码）<br><br>
     </div>
   </div>
 </body>

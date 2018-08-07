@@ -2,6 +2,7 @@ var cacheName = 'chain-post';
 var filesToCache = [
   '/',
   '/index.html',
+  '/zh.html',
   'https://cdn.jsdelivr.net/npm/datacash@1.1.7/dist/datacash.min.js'
 ];
 self.addEventListener('install', function(e) {
@@ -17,6 +18,9 @@ self.addEventListener('activate',  event => {
   event.waitUntil(self.clients.claim());
 });
 self.addEventListener('fetch', event => {
+  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+    return;
+  }
   event.respondWith(
     caches.match(event.request, {ignoreSearch:true}).then(response => {
       return response || fetch(event.request);
