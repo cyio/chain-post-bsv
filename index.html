@@ -100,7 +100,7 @@
       margin-left: 10px;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/datacash@1.1.7/dist/datacash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@cyio/datacash@1.2.0/dist/datacash.min.js"></script>
   <script>
   window.addEventListener("load", function() {
     if ('serviceWorker' in navigator) {
@@ -217,6 +217,7 @@
                   confirmEl.innerHTML = "Response: " + response.response;
                   return
                 }
+                messageEl.value = ""
                 e.target.textContent = "Sent!";
                 confirmEl.innerHTML = "<a href='https://explorer.bitcoin.com/bch/tx/" + response.tx + "' target='_blank'>Success! Click to view Transaction</a>";
               })
@@ -236,7 +237,7 @@
           dsl.data = [selected, messageEl.value];
         }
         if (keyEl.value.length > 0) {
-          dsl.cash = { key: keyEl.value, fee: 300 }
+          dsl.cash = { key: keyEl.value }
         }
       }
     }
