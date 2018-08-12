@@ -113,6 +113,10 @@
         });
     }
   })
+  var isZh = /zh/.test(window.navigator.language || window.navigator.userLanguage)
+  if (isZh) {
+    location.replace(location.href + 'zh.html')
+  }
   var endpoint = "https://chainfeed.org/send";
   var transaction = null;
   var selected = '0x6d02';
