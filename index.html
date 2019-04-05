@@ -222,6 +222,7 @@
                   return
                 }
                 messageEl.value = ""
+                setMsgByteCount(messageEl, msgByteCountEl);
                 e.target.textContent = "Sent!";
                 confirmEl.innerHTML = "<a href='https://bsv.btc.com/" + response.txid + "' target='_blank'>Success! Click to view Transaction</a>";
               })

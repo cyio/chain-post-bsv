@@ -217,6 +217,7 @@
                   return
                 }
                 messageEl.value = ""
+                setMsgByteCount(messageEl, msgByteCountEl);
                 e.target.textContent = "发布成功!";
                 confirmEl.innerHTML = "<a href='https://bsv.btc.com/" + response.txid + "' target='_blank'>点此查看交易</a>";
               })
