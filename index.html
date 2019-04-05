@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#fff">
   <link rel=icon type=image/png sizes=16x16 href=/favicon.png>
   <link rel=manifest href=/manifest.json>
-  <title>ChainPost - Post on Blockchain(BCH)</title>
+  <title>ChainPost - Post on Blockchain(BSV)</title>
   <style>
     body {
       margin: 0;
@@ -100,7 +100,7 @@
       margin-left: 10px;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@cyio/datacash@1.3.0/dist/datacash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@cyio/datapay@0.0.13/dist/datapay.min.js"></script>
   <script>
   window.addEventListener("load", function() {
     if ('serviceWorker' in navigator) {
@@ -117,11 +117,11 @@
   if (isZh) {
     location.replace(location.href + 'zh.html')
   }
-  var endpoint = "https://chainfeed.org/send";
+  var endpoint = "https://api.bitindex.network/api/tx/send";
   var transaction = null;
   var selected = '0x6d02';
   var sending = false;
-  var maxPostBytes = 217;
+  var maxPostBytes = 65000;
   function utf8ByteLength(str) {
     // returns the byte length of an utf8 string
     var s = str.length;
@@ -191,7 +191,7 @@
       }
       if (!sending) {
         e.target.textContent = "Transaction creating...";
-        datacash.build(dsl, function(err, tx) {
+        datapay.build(dsl, function(err, tx) {
           transaction = tx;
           console.log('tx: ', tx);
           console.log('tx hex: ', tx.toString());
@@ -208,7 +208,7 @@
                 'Content-Type': 'application/json'
               },
               method: 'POST',
-              body: JSON.stringify({tx: transaction.toString()})
+              body: JSON.stringify({rawtx: transaction.toString()})
             })
               .then(function(res) {
                 return res.json();
@@ -216,14 +216,14 @@
               .then(function(response) {
                 console.log("Response = ", response)
                 sending = false
-                if (!response.tx) {
+                if (!response.txid) {
                   e.target.textContent = "Send failed";
                   confirmEl.innerHTML = "Response: " + response.response;
                   return
                 }
                 messageEl.value = ""
                 e.target.textContent = "Sent!";
-                confirmEl.innerHTML = "<a href='https://explorer.bitcoin.com/bch/tx/" + response.tx + "' target='_blank'>Success! Click to view Transaction</a>";
+                confirmEl.innerHTML = "<a href='https://bsv.btc.com/" + response.txid + "' target='_blank'>Success! Click to view Transaction</a>";
               })
           }
         })
@@ -241,7 +241,7 @@
           dsl.data = [selected, messageEl.value];
         }
         if (keyEl.value.length > 0) {
-          dsl.cash = { key: keyEl.value }
+          dsl.pay = { key: keyEl.value }
         }
       }
     }
@@ -251,7 +251,7 @@
 </head>
 <body>
   <div class='container'>
-    <h1>Post on Blockchain(BCH)</h1>
+    <h1>Post on Blockchain(BSV)</h1>
     <div class='row'>
       <h2>Write a message</h2>
       <div class="message-count-wrap">[<span class="message-byte-count"></span>]</div>
@@ -277,11 +277,11 @@
     </div>
     <div class='row noflex'>
       <h2>About</h2>
-      This website uses an open source Bitcoin Cash library called <a href='https://github.com/unwriter/datacash'>Datacash</a> to construct and broadcast OP_RETURN Bitcoin Cash Transactions.<br><br>
+      This website uses an open source Bitcoin Cash library called <a href='https://github.com/unwriter/datapay'>datapay</a> to construct and broadcast OP_RETURN Bitcoin Cash Transactions.<br><br>
       1. All the signing takes place 100% on the client side so your private key is safe. (Check out the source code to make sure)<br><br>
       2. After the signed transaction is constructed, you can broadcast it to Bitcoin Cash network by pressing the "Send" button. This will broadcast the signed transaction through a public JSON-RPC endpoint.<br><br>
       3. This forked version have add some features like option to remember private-key, error handle, etc.
-        <a href='https://unwriter.github.io/datacash/example/playground.html'>original version</a>
+        <a href='https://unwriter.github.io/datapay/example/playground.html'>original version</a>
     </div>
   </div>
 </body>

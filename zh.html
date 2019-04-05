@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#fff">
   <link rel=icon type=image/png sizes=16x16 href=/favicon.png>
   <link rel=manifest href=/manifest.json>
-  <title>发消息到区块链（BCH）</title>
+  <title>发消息到区块链（BSV）</title>
   <style>
     body {
       margin: 0;
@@ -100,7 +100,7 @@
       margin-left: 10px;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@cyio/datacash@1.3.0/dist/datacash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@cyio/datapay@0.0.13/dist/datapay.min.js"></script>
   <script>
   window.addEventListener("load", function() {
     if ('serviceWorker' in navigator) {
@@ -113,11 +113,11 @@
         });
     }
   })
-  var endpoint = "https://chainfeed.org/send";
+  var endpoint = "https://api.bitindex.network/api/tx/send";
   var transaction = null;
   var selected = '0x6d02';
   var sending = false;
-  var maxPostBytes = 217;
+  var maxPostBytes = 65000;
   function utf8ByteLength(str) {
     // returns the byte length of an utf8 string
     var s = str.length;
@@ -187,7 +187,7 @@
       }
       if (!sending) {
         e.target.textContent = "交易创建中...";
-        datacash.build(dsl, function(err, tx) {
+        datapay.build(dsl, function(err, tx) {
           transaction = tx;
           console.log('tx: ', tx);
           console.log('tx hex: ', tx.toString());
@@ -198,13 +198,12 @@
             e.target.textContent = "发送中...";
             sending = true;
             fetch(endpoint, {
-              headers: { 'Content-type': 'application/json' },
               headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
               },
               method: 'POST',
-              body: JSON.stringify({tx: transaction.toString()})
+              body: JSON.stringify({rawtx: transaction.toString()})
             })
               .then(function(res) {
                 return res.json();
@@ -212,14 +211,14 @@
               .then(function(response) {
                 console.log("Response = ", response)
                 sending = false
-                if (!response.tx) {
+                if (!response.txid) {
                   e.target.textContent = "发布失败";
                   confirmEl.innerHTML = "Response: " + response.response;
                   return
                 }
                 messageEl.value = ""
                 e.target.textContent = "发布成功!";
-                confirmEl.innerHTML = "<a href='https://explorer.bitcoin.com/bch/tx/" + response.tx + "' target='_blank'>点此查看交易</a>";
+                confirmEl.innerHTML = "<a href='https://bsv.btc.com/" + response.txid + "' target='_blank'>点此查看交易</a>";
               })
           }
         })
@@ -237,7 +236,7 @@
           dsl.data = [selected, messageEl.value];
         }
         if (keyEl.value.length > 0) {
-          dsl.cash = { key: keyEl.value }
+          dsl.pay = { key: keyEl.value }
         }
       }
     }
@@ -247,7 +246,7 @@
 </head>
 <body>
   <div class='container'>
-    <h1>发消息到区块链(BCH)，永久存储</h1>
+    <h1>发消息到区块链(BSV)，永久存储</h1>
     <div class='row'>
       <h2>说点什么</h2>
       <div class="message-count-wrap">[<span class="message-byte-count"></span>]</div>
@@ -276,9 +275,9 @@
       1. 设置私钥，从 memo 账户导出私钥，或使用新的私钥 （如果经常用，建议选择记住）<br><br>
       2. 写下你想说的话，点击发布。完。
       <h2>关于</h2>
-      此网站使用开源库 <a href='https://github.com/unwriter/datacash'>Datacash</a> 来构造和广播 OP_RETURN 比特币现金交易。<br><br>
+      此网站使用开源库 <a href='https://github.com/unwriter/datapay'>datapay</a> 来构造和广播 OP_RETURN 比特币现金交易。<br><br>
       所有签名 100% 发生在客户端，因此您的私钥是安全的。<br><br>
-      本站源代码：<a href="https://github.com/cyio/chain-post" target="_blank">cyio/chain-post</a><br><br>
+      本站源代码：<a href="https://github.com/cyio/chain-post-bsv" target="_blank">cyio/chain-post-bsv</a><br><br>
     </div>
   </div>
 </body>

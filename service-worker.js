@@ -1,4 +1,4 @@
-var cacheName = 'chain-post';
+var cacheName = 'chain-post-bsv';
 var filesToCache = [
   '/',
   '/index.html',
