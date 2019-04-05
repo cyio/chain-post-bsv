@@ -3,7 +3,7 @@ var filesToCache = [
   '/',
   '/index.html',
   '/zh.html',
-  'https://cdn.jsdelivr.net/npm/datacash@1.1.7/dist/datacash.min.js'
+  'https://cdn.jsdelivr.net/npm/@cyio/datapay@0.0.13/dist/datapay.min.js'
 ];
 self.addEventListener('install', function(e) {
   console.log('[ServiceWorker] Install');
